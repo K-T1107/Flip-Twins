@@ -22,10 +22,10 @@ public class StageController : MonoBehaviour
     {
         bool[,] stage1 = new bool[4, 4]
         {
-            { true, false, false, true },
-            { false, true, true, false },
-            { false, true, true, false },
-            { true, false, false, true }
+            { false, false, false, false },
+            { true, true, true, false },
+            { true, true, true, false },
+            { true, true, true, false }
         };
 
         for (int x = 0; x < 4; x++)

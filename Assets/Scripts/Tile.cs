@@ -29,6 +29,8 @@ public class Tile : MonoBehaviour
         if (isLocked) return; // ÉçÉbÉNÇ≥ÇÍÇƒÇ¢ÇÍÇŒñ≥éã
         Flip();
         FlipNeighbors();
+
+        FindObjectOfType<BoardController>().CheckClear();
     }
 
     public void Flip()
@@ -40,7 +42,7 @@ public class Tile : MonoBehaviour
     public void UpdateSprite()
     {
         if (sr == null) sr = GetComponent<SpriteRenderer>();
-        Debug.Log($"UpdateSprite called. isOn = {isOn}, sprite = {(isOn ? onSprite.name : offSprite.name)}");
+
         sr.sprite = isOn ? onSprite : offSprite;
     }
 

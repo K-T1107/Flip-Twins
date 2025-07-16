@@ -70,13 +70,5 @@ public class TileManager : MonoBehaviour
                 boardController.rightTiles[x, y] = tile;
             }
         }
-
-        for (int x = 0; x < 4; x++)
-        {
-            for (int y = 0; y < 4; y++)
-            {
-                Debug.Log($"goal[{x},{y}] = {goal[x, y]}");
-            }
-        }
     }
 }

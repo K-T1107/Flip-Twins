@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class BoardController : MonoBehaviour
 {
@@ -14,6 +16,15 @@ public class BoardController : MonoBehaviour
     private bool leftCleared = false;
     private bool rightCleared = false;
 
+    public TextMeshProUGUI clearText;
+    public Button toSelectButton;
+
+    void Start()
+    {
+        clearText.gameObject.SetActive(false);
+        toSelectButton.gameObject.SetActive(false);
+    }
+
     void Update()
     {
         HandleLeftInput();
@@ -21,6 +32,7 @@ public class BoardController : MonoBehaviour
         UpdateCursorPosition();
     }
 
+    //左側の操作
     void HandleLeftInput()
     {
         if (Input.GetKeyDown(KeyCode.W)) leftCursor.y = Mathf.Clamp(leftCursor.y + 1, 0, 3);
@@ -36,12 +48,13 @@ public class BoardController : MonoBehaviour
             if (!leftCleared && IsBoardMatched(leftTiles))
             {
                 leftCleared = true;
-                Debug.Log("🎉 左クリア！");
+                Debug.Log("左クリア！");
                 // ここにクリア演出を追加
             }
         }
     }
 
+    //右側の操作
     void HandleRightInput()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow)) rightCursor.y = Mathf.Clamp(rightCursor.y + 1, 0, 3);
@@ -57,12 +70,13 @@ public class BoardController : MonoBehaviour
             if (!rightCleared && IsBoardMatched(rightTiles))
             {
                 rightCleared = true;
-                Debug.Log("🎉 右クリア！");
+                Debug.Log("右クリア！");
                 // ここにクリア演出を追加
             }
         }
     }
 
+    //カーソルの設定
     void UpdateCursorPosition()
     {
         Tile lt = leftTiles[leftCursor.x, leftCursor.y];
@@ -72,6 +86,7 @@ public class BoardController : MonoBehaviour
         if (rt != null) rightCursorObject.transform.position = rt.transform.position;
     }
 
+    //もしお題と合っていたら
     public bool IsBoardMatched(Tile[,] board)
     {
         bool[,] goal = StageController.Instance.GoalPattern;
@@ -87,5 +102,34 @@ public class BoardController : MonoBehaviour
             }
         }
         return true;
+    }
+
+    //合ってるかどうかの判断
+    public void CheckClear()
+    {
+        bool isCleared = true;
+        bool[,] goal = StageController.Instance.GoalPattern;
+
+        for (int x = 0; x < 4; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                // 左右のタイルが goal と一致していなければクリアじゃない
+                if (leftTiles[x, y].isOn != goal[x, y] || rightTiles[x, y].isOn != goal[x, y])
+                {
+                    isCleared = false;
+                    break;
+                }
+            }
+            if (!isCleared) break;
+        }
+
+        if (isCleared)
+        {
+            Debug.Log("クリア！！！");
+            clearText.gameObject.SetActive(true);
+            toSelectButton.gameObject.SetActive(true);
+            //ここで演出や次のステージ処理を追加
+        }
     }
 }
