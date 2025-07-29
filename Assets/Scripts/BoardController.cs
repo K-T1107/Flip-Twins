@@ -18,11 +18,13 @@ public class BoardController : MonoBehaviour
 
     public TextMeshProUGUI clearText;
     public Button toSelectButton;
+    public Button toNextButton;
 
     void Start()
     {
         clearText.gameObject.SetActive(false);
         toSelectButton.gameObject.SetActive(false);
+        toNextButton.gameObject.SetActive(false);
     }
 
     void Update()
@@ -126,9 +128,17 @@ public class BoardController : MonoBehaviour
 
         if (isCleared)
         {
+            // タイマー停止
+            TimerManager timerManager = FindObjectOfType<TimerManager>();
+            if (timerManager != null)
+            {
+                timerManager.StopTimer();
+            }
+
             Debug.Log("クリア！！！");
             clearText.gameObject.SetActive(true);
             toSelectButton.gameObject.SetActive(true);
+            toNextButton.gameObject.SetActive(true);
             //ここで演出や次のステージ処理を追加
         }
     }
