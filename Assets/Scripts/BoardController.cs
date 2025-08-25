@@ -7,6 +7,9 @@ public class BoardController : MonoBehaviour
     public Tile[,] leftTiles = new Tile[4, 4];
     public Tile[,] rightTiles = new Tile[4, 4];
 
+    public Transform leftParent;   // 左のタイルをまとめる親
+    public Transform rightParent;  // 右のタイルをまとめる親
+
     private Vector2Int leftCursor = new Vector2Int(0, 0);
     private Vector2Int rightCursor = new Vector2Int(0, 0);
 
@@ -22,6 +25,10 @@ public class BoardController : MonoBehaviour
 
     void Start()
     {
+        // 親オブジェクトからタイルを自動登録
+        AutoAssignTiles(leftParent, leftTiles);
+        AutoAssignTiles(rightParent, rightTiles);
+
         clearText.gameObject.SetActive(false);
         toSelectButton.gameObject.SetActive(false);
         toNextButton.gameObject.SetActive(false);
@@ -34,7 +41,29 @@ public class BoardController : MonoBehaviour
         UpdateCursorPosition();
     }
 
-    //左側の操作
+    void AutoAssignTiles(Transform parent, Tile[,] tiles)
+    {
+        Tile[] found = parent.GetComponentsInChildren<Tile>();
+        if (found.Length != 16)
+            Debug.LogWarning("タイル数が16枚ではありません！");
+
+        foreach (Tile tile in found)
+        {
+            Vector2 pos = tile.transform.localPosition;
+            int x = Mathf.RoundToInt((pos.x + 3f) / 2f); // 座標を0-3に変換
+            int y = Mathf.RoundToInt((pos.y + 3f) / 2f);
+            if (x >= 0 && x < 4 && y >= 0 && y < 4)
+            {
+                tiles[x, y] = tile;
+            }
+            else
+            {
+                Debug.LogWarning($"{tile.name} がグリッド範囲外です");
+            }
+        }
+    }
+
+    // 左操作
     void HandleLeftInput()
     {
         if (Input.GetKeyDown(KeyCode.W)) leftCursor.y = Mathf.Clamp(leftCursor.y + 1, 0, 3);
@@ -51,12 +80,12 @@ public class BoardController : MonoBehaviour
             {
                 leftCleared = true;
                 Debug.Log("左クリア！");
-                // ここにクリア演出を追加
+                CheckClear();
             }
         }
     }
 
-    //右側の操作
+    // 右操作
     void HandleRightInput()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow)) rightCursor.y = Mathf.Clamp(rightCursor.y + 1, 0, 3);
@@ -73,12 +102,11 @@ public class BoardController : MonoBehaviour
             {
                 rightCleared = true;
                 Debug.Log("右クリア！");
-                // ここにクリア演出を追加
+                CheckClear();
             }
         }
     }
 
-    //カーソルの設定
     void UpdateCursorPosition()
     {
         Tile lt = leftTiles[leftCursor.x, leftCursor.y];
@@ -88,7 +116,6 @@ public class BoardController : MonoBehaviour
         if (rt != null) rightCursorObject.transform.position = rt.transform.position;
     }
 
-    //もしお題と合っていたら
     public bool IsBoardMatched(Tile[,] board)
     {
         bool[,] goal = StageController.Instance.GoalPattern;
@@ -97,49 +124,27 @@ public class BoardController : MonoBehaviour
         {
             for (int y = 0; y < 4; y++)
             {
-                if (board[x, y].isOn != goal[x, y])
-                {
+                if (board[x, y] == null || board[x, y].isOn != goal[x, y])
                     return false;
-                }
             }
         }
         return true;
     }
 
-    //合ってるかどうかの判断
     public void CheckClear()
     {
-        bool isCleared = true;
-        bool[,] goal = StageController.Instance.GoalPattern;
-
-        for (int x = 0; x < 4; x++)
-        {
-            for (int y = 0; y < 4; y++)
-            {
-                // 左右のタイルが goal と一致していなければクリアじゃない
-                if (leftTiles[x, y].isOn != goal[x, y] || rightTiles[x, y].isOn != goal[x, y])
-                {
-                    isCleared = false;
-                    break;
-                }
-            }
-            if (!isCleared) break;
-        }
-
+        bool isCleared = leftCleared && rightCleared;
         if (isCleared)
         {
-            // タイマー停止
             TimerManager timerManager = FindObjectOfType<TimerManager>();
             if (timerManager != null)
-            {
                 timerManager.StopTimer();
-            }
 
             Debug.Log("クリア！！！");
+
             clearText.gameObject.SetActive(true);
             toSelectButton.gameObject.SetActive(true);
             toNextButton.gameObject.SetActive(true);
-            //ここで演出や次のステージ処理を追加
         }
     }
 }

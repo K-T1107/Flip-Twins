@@ -1312,7 +1312,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1146855345}
         m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadStage2
+        m_MethodName: LoadStage9
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2039,7 +2039,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 955722623048973858, guid: 2bf322d34a534b54f8756597709a3c30, type: 3}
   boardController: {fileID: 288595011}
-  stageNumber: 2
+  stageNumber: 9
 --- !u!4 &1957226846
 Transform:
   m_ObjectHideFlags: 0

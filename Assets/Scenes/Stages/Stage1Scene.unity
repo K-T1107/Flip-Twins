@@ -2099,7 +2099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d319244bcff5d544eaf37edfaf9ac9e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLimit: 3
+  timeLimit: 20
   timerText: {fileID: 1500122707}
   gameOverPanel: {fileID: 1152486462}
 --- !u!1 &2134095528
