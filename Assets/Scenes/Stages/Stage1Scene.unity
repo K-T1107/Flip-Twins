@@ -618,8 +618,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b80928016a95c0409daf7a39005cbee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftParent: {fileID: 5646848357588689443, guid: 2bf322d34a534b54f8756597709a3c30, type: 3}
-  rightParent: {fileID: 5646848357588689443, guid: 2bf322d34a534b54f8756597709a3c30, type: 3}
   leftCursorObject: {fileID: 2134095528}
   rightCursorObject: {fileID: 254312020}
   clearText: {fileID: 394179087}
