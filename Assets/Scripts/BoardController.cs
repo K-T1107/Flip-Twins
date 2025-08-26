@@ -7,9 +7,6 @@ public class BoardController : MonoBehaviour
     public Tile[,] leftTiles = new Tile[4, 4];
     public Tile[,] rightTiles = new Tile[4, 4];
 
-    public Transform leftParent;   // 左のタイルをまとめる親
-    public Transform rightParent;  // 右のタイルをまとめる親
-
     private Vector2Int leftCursor = new Vector2Int(0, 0);
     private Vector2Int rightCursor = new Vector2Int(0, 0);
 
@@ -23,12 +20,16 @@ public class BoardController : MonoBehaviour
     public Button toSelectButton;
     public Button toNextButton;
 
+    // ← 追加：TileManagerから渡されるゴールパターン
+    private bool[,] goalPattern;
+
+    public void SetGoalPattern(bool[,] pattern)
+    {
+        goalPattern = pattern;
+    }
+
     void Start()
     {
-        // 親オブジェクトからタイルを自動登録
-        AutoAssignTiles(leftParent, leftTiles);
-        AutoAssignTiles(rightParent, rightTiles);
-
         clearText.gameObject.SetActive(false);
         toSelectButton.gameObject.SetActive(false);
         toNextButton.gameObject.SetActive(false);
@@ -39,28 +40,6 @@ public class BoardController : MonoBehaviour
         HandleLeftInput();
         HandleRightInput();
         UpdateCursorPosition();
-    }
-
-    void AutoAssignTiles(Transform parent, Tile[,] tiles)
-    {
-        Tile[] found = parent.GetComponentsInChildren<Tile>();
-        if (found.Length != 16)
-            Debug.LogWarning("タイル数が16枚ではありません！");
-
-        foreach (Tile tile in found)
-        {
-            Vector2 pos = tile.transform.localPosition;
-            int x = Mathf.RoundToInt((pos.x + 3f) / 2f); // 座標を0-3に変換
-            int y = Mathf.RoundToInt((pos.y + 3f) / 2f);
-            if (x >= 0 && x < 4 && y >= 0 && y < 4)
-            {
-                tiles[x, y] = tile;
-            }
-            else
-            {
-                Debug.LogWarning($"{tile.name} がグリッド範囲外です");
-            }
-        }
     }
 
     // 左操作
@@ -118,13 +97,17 @@ public class BoardController : MonoBehaviour
 
     public bool IsBoardMatched(Tile[,] board)
     {
-        bool[,] goal = StageController.Instance.GoalPattern;
+        if (goalPattern == null)
+        {
+            Debug.LogWarning("GoalPattern が設定されていません");
+            return false;
+        }
 
         for (int x = 0; x < 4; x++)
         {
             for (int y = 0; y < 4; y++)
             {
-                if (board[x, y] == null || board[x, y].isOn != goal[x, y])
+                if (board[x, y] == null || board[x, y].isOn != goalPattern[x, y])
                     return false;
             }
         }

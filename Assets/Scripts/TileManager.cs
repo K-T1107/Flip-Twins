@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class TileManager : MonoBehaviour
 {
-    public GameObject tilePrefab;          // タイルのプレハブ
-    public BoardController boardController;// 左右のボード操作用
-    public int stageNumber = 1;            // ステージ番号（インスペクターで設定）
+    public GameObject tilePrefab;
+    public BoardController boardController;
+    public int stageNumber = 1;
 
     private const int gridSize = 4;
     private const float tileSize = 2f;
@@ -14,13 +14,16 @@ public class TileManager : MonoBehaviour
         boardController.leftTiles = new Tile[gridSize, gridSize];
         boardController.rightTiles = new Tile[gridSize, gridSize];
 
-        CreateTiles();
+        // ゴールパターンを生成
+        bool[,] goal = GetGoalPattern(stageNumber);
+        // BoardControllerに渡す
+        boardController.SetGoalPattern(goal);
+
+        CreateTiles(goal);
     }
 
-    void CreateTiles()
+    void CreateTiles(bool[,] goal)
     {
-        bool[,] goal = GetGoalPattern(stageNumber);
-
         Vector3 leftOrigin = new Vector3(-14f, -4f, 0);
         Vector3 centerOrigin = new Vector3(-3.5f, -4f, 0);
         Vector3 rightOrigin = new Vector3(7f, -4f, 0);
@@ -89,77 +92,76 @@ public class TileManager : MonoBehaviour
             case 2:
                 return new bool[gridSize, gridSize]
                 {
-                    { false, false, false, false },
-                    { true, true, true, true },
-                    { true, true, true, true },
-                    { true, true, true, true }
+            { false, false, false, false },
+            { true, true, true, true },
+            { true, true, true, true },
+            { true, true, true, true }
                 };
             case 3:
                 return new bool[gridSize, gridSize]
                 {
-                    { true, true, true, true },
-                    { false, false, false, false },
-                    { false, false, false, false },
-                    { false, false, false, false }
+            { true, true, true, true },
+            { false, false, false, false },
+            { false, false, false, false },
+            { false, false, false, false }
                 };
             case 4:
                 return new bool[gridSize, gridSize]
                 {
-                    { true, true, false, false },
-                    { true, true, false, false },
-                    { true, false, true, true },
-                    { true, false, true, true }
+            { true, true, false, false },
+            { true, true, false, false },
+            { true, false, true, true },
+            { true, false, true, true }
                 };
             case 5:
                 return new bool[gridSize, gridSize]
                 {
-                    { false, false, false, false },
-                    { false, true, false, true },
-                    { false, true, false, true },
-                    { false, true, false, true }
+            { false, false, false, false },
+            { false, true, false, true },
+            { false, true, false, true },
+            { false, true, false, true }
                 };
             case 6:
                 return new bool[gridSize, gridSize]
                 {
-                    { true, true, false, true },
-                    { false, false, false, false },
-                    { false, false, false, false },
-                    { false, false, false, false }
+            { true, true, false, true },
+            { false, false, false, false },
+            { false, false, false, false },
+            { false, false, false, false }
                 };
             case 7:
                 return new bool[gridSize, gridSize]
                 {
-                    { false, true, false, true },
-                    { false, false, true, false },
-                    { false, false, true, false },
-                    { false, true, false, true }
+            { false, true, false, true },
+            { false, false, true, false },
+            { false, false, true, false },
+            { false, true, false, true }
                 };
             case 8:
                 return new bool[gridSize, gridSize]
                 {
-                    { false, false, false, false },
-                    { true, true, true, true },
-                    { false, false, false, false },
-                    { true, true, true, true }
+            { false, false, false, false },
+            { true, true, true, true },
+            { false, false, false, false },
+            { true, true, true, true }
                 };
             case 9:
                 return new bool[gridSize, gridSize]
                 {
-                    { true, true, false, true },
-                    { false, true, true, false },
-                    { false, true, true, false },
-                    { true, false, true, true }
+            { true, true, false, true },
+            { false, true, true, false },
+            { false, true, true, false },
+            { true, false, true, true }
                 };
             case 10:
                 return new bool[gridSize, gridSize]
                 {
-                    { false, true, true, false },
-                    { true, true, true, true },
-                    { true, true, true, true },
-                    { false, true, true, false }
+            { false, true, true, false },
+            { true, true, true, true },
+            { true, true, true, true },
+            { false, true, true, false }
                 };
             default:
-                // デフォルトは全部 false
                 return new bool[gridSize, gridSize];
         }
     }
