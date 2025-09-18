@@ -23,7 +23,14 @@ public class SceneLoader : MonoBehaviour
 
     public void TutorialScene()
     {
+        //チュートリアル画面に遷移
         SceneManager.LoadScene("TutorialScene");
+    }
+
+    public void RankjngScene()
+    {
+        //ランキング画面に遷移
+        SceneManager.LoadScene("RankingScene");
     }
 
     public void LoadStage1()
@@ -40,49 +47,49 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadStage3()
     {
-        //ステージ2に遷移
+        //ステージ3に遷移
         SceneManager.LoadScene("Stage3Scene");
     }
 
     public void LoadStage4()
     {
-        //ステージ2に遷移
+        //ステージ4に遷移
         SceneManager.LoadScene("Stage4Scene");
     }
 
     public void LoadStage5()
     {
-        //ステージ2に遷移
+        //ステージ5に遷移
         SceneManager.LoadScene("Stage5Scene");
     }
 
     public void LoadStage6()
     {
-        //ステージ2に遷移
+        //ステージ6に遷移
         SceneManager.LoadScene("Stage6Scene");
     }
 
     public void LoadStage7()
     {
-        //ステージ2に遷移
+        //ステージ7に遷移
         SceneManager.LoadScene("Stage7Scene");
     }
 
     public void LoadStage8()
     {
-        //ステージ2に遷移
+        //ステージ8に遷移
         SceneManager.LoadScene("Stage8Scene");
     }
 
     public void LoadStage9()
     {
-        //ステージ2に遷移
+        //ステージ9に遷移
         SceneManager.LoadScene("Stage9Scene");
     }
 
     public void LoadStage10()
     {
-        //ステージ2に遷移
+        //ステージ10に遷移
         SceneManager.LoadScene("Stage10Scene");
     }
 }

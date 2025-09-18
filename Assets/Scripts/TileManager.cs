@@ -77,6 +77,7 @@ public class TileManager : MonoBehaviour
         }
     }
 
+    //ステージパターン
     bool[,] GetGoalPattern(int stage)
     {
         switch (stage)

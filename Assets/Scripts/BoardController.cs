@@ -86,6 +86,7 @@ public class BoardController : MonoBehaviour
         }
     }
 
+    //カーソル
     void UpdateCursorPosition()
     {
         Tile lt = leftTiles[leftCursor.x, leftCursor.y];
@@ -114,6 +115,7 @@ public class BoardController : MonoBehaviour
         return true;
     }
 
+    //クリアチェック
     public void CheckClear()
     {
         bool isCleared = leftCleared && rightCleared;
