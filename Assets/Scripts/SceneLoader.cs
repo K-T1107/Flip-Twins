@@ -33,6 +33,12 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("RankingScene");
     }
 
+    public void ExScene()
+    {
+        //Ex画面に遷移
+        SceneManager.LoadScene("ExScene");
+    }
+
     public void LoadStage1()
     {
         //ステージ１に遷移
@@ -91,5 +97,35 @@ public class SceneLoader : MonoBehaviour
     {
         //ステージ10に遷移
         SceneManager.LoadScene("Stage10Scene");
+    }
+
+    public void LoadStage15()
+    {
+        //ステージ10に遷移
+        SceneManager.LoadScene("Stage15Scene");
+    }
+
+    public void LoadStage11()
+    {
+        //ステージ10に遷移
+        SceneManager.LoadScene("Stage11Scene");
+    }
+
+    public void LoadStage12()
+    {
+        //ステージ10に遷移
+        SceneManager.LoadScene("Stage12Scene");
+    }
+
+    public void LoadStage13()
+    {
+        //ステージ10に遷移
+        SceneManager.LoadScene("Stage13Scene");
+    }
+
+    public void LoadStage14()
+    {
+        //ステージ10に遷移
+        SceneManager.LoadScene("Stage14Scene");
     }
 }

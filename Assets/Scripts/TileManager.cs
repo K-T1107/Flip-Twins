@@ -2,168 +2,202 @@ using UnityEngine;
 
 public class TileManager : MonoBehaviour
 {
-    public GameObject tilePrefab;
-    public BoardController boardController;
-    public int stageNumber = 1;
+    public static TileManager Instance { get; private set; }
 
-    private const int gridSize = 4;
-    private const float tileSize = 2f;
+    public int CurrentStage = 1;
 
-    void Start()
+    public bool[,] LeftPattern { get; private set; } = new bool[4, 4];
+    public bool[,] RightPattern { get; private set; } = new bool[4, 4];
+    public bool[,] GoalPattern { get; private set; } = new bool[4, 4];
+
+    private void Awake()
     {
-        boardController.leftTiles = new Tile[gridSize, gridSize];
-        boardController.rightTiles = new Tile[gridSize, gridSize];
-
-        // ゴールパターンを生成
-        bool[,] goal = GetGoalPattern(stageNumber);
-        // BoardControllerに渡す
-        boardController.SetGoalPattern(goal);
-
-        CreateTiles(goal);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        LoadStage(CurrentStage);
     }
 
-    void CreateTiles(bool[,] goal)
+    public void LoadStage(int stage)
     {
-        Vector3 leftOrigin = new Vector3(-14f, -4f, 0);
-        Vector3 centerOrigin = new Vector3(-3.5f, -4f, 0);
-        Vector3 rightOrigin = new Vector3(7f, -4f, 0);
+        // 全部表で初期化
+        for (int x = 0; x < 4; x++)
+            for (int y = 0; y < 4; y++)
+                LeftPattern[x, y] = RightPattern[x, y] = GoalPattern[x, y] = false;
 
-        // 左側
-        for (int x = 0; x < gridSize; x++)
-        {
-            for (int y = 0; y < gridSize; y++)
-            {
-                Vector3 pos = leftOrigin + new Vector3(x * tileSize, y * tileSize, 0);
-                GameObject obj = Instantiate(tilePrefab, pos, Quaternion.identity);
-                obj.transform.localScale = new Vector3(2f, 2f, 1f);
-                Tile tile = obj.GetComponent<Tile>();
-                tile.Initialize();
-                tile.isOn = false;
-                tile.UpdateSprite();
-                boardController.leftTiles[x, y] = tile;
-            }
-        }
-
-        // 真ん中（お題）
-        for (int x = 0; x < gridSize; x++)
-        {
-            for (int y = 0; y < gridSize; y++)
-            {
-                Vector3 pos = centerOrigin + new Vector3(x * tileSize, y * tileSize, 0);
-                GameObject obj = Instantiate(tilePrefab, pos, Quaternion.identity);
-                obj.transform.localScale = new Vector3(2f, 2f, 1f);
-                Tile tile = obj.GetComponent<Tile>();
-                tile.Initialize();
-                tile.isOn = goal[x, y];
-                tile.isLocked = true;
-                tile.UpdateSprite();
-            }
-        }
-
-        // 右側
-        for (int x = 0; x < gridSize; x++)
-        {
-            for (int y = 0; y < gridSize; y++)
-            {
-                Vector3 pos = rightOrigin + new Vector3(x * tileSize, y * tileSize, 0);
-                GameObject obj = Instantiate(tilePrefab, pos, Quaternion.identity);
-                obj.transform.localScale = new Vector3(2f, 2f, 1f);
-                Tile tile = obj.GetComponent<Tile>();
-                tile.Initialize();
-                tile.isOn = false;
-                tile.UpdateSprite();
-                boardController.rightTiles[x, y] = tile;
-            }
-        }
-    }
-
-    //ステージパターン
-    bool[,] GetGoalPattern(int stage)
-    {
         switch (stage)
         {
-            case 1:
-                return new bool[gridSize, gridSize]
-                {
-                    { false, true, true, true },
-                    { false, true, true, true },
-                    { false, true, true, true },
+            case 1: // かなり簡単
+                GoalPattern = new bool[4, 4] {
+                    { false, false, false, false },
+                    { false, true,  false, false },
+                    { false, false, false, false },
                     { false, false, false, false }
                 };
+                LeftPattern[0, 0] = true; // 左1枚だけ裏
+                break;
+
             case 2:
-                return new bool[gridSize, gridSize]
-                {
-            { false, false, false, false },
-            { true, true, true, true },
-            { true, true, true, true },
-            { true, true, true, true }
+                GoalPattern = new bool[4, 4] {
+                    { false, false, false, false },
+                    { false, true, true, false },
+                    { false, false, false, false },
+                    { false, false, false, false }
                 };
+                LeftPattern[0, 0] = true;
+                RightPattern[3, 3] = true;
+                break;
+
             case 3:
-                return new bool[gridSize, gridSize]
-                {
-            { true, true, true, true },
-            { false, false, false, false },
-            { false, false, false, false },
-            { false, false, false, false }
+                GoalPattern = new bool[4, 4] {
+                    { false, true, false, false },
+                    { false, true, true, false },
+                    { false, false, true, false },
+                    { false, false, false, false }
                 };
+                LeftPattern[0, 0] = LeftPattern[1, 1] = true;
+                RightPattern[3, 3] = true;
+                break;
+
             case 4:
-                return new bool[gridSize, gridSize]
-                {
-            { true, true, false, false },
-            { true, true, false, false },
-            { true, false, true, true },
-            { true, false, true, true }
+                GoalPattern = new bool[4, 4] {
+                    { false, true, false, true },
+                    { true, false, true, false },
+                    { false, true, false, true },
+                    { true, false, true, false }
                 };
+                LeftPattern[0, 0] = LeftPattern[2, 1] = true;
+                RightPattern[1, 2] = RightPattern[3, 0] = true;
+                break;
+
             case 5:
-                return new bool[gridSize, gridSize]
-                {
-            { false, false, false, false },
-            { false, true, false, true },
-            { false, true, false, true },
-            { false, true, false, true }
+                GoalPattern = new bool[4, 4] {
+                    { true, false, true, false },
+                    { false, true, false, true },
+                    { true, false, true, false },
+                    { false, true, false, true }
                 };
+                LeftPattern[0, 0] = LeftPattern[1, 1] = LeftPattern[2, 2] = true;
+                RightPattern[0, 3] = RightPattern[3, 0] = true;
+                break;
+
             case 6:
-                return new bool[gridSize, gridSize]
-                {
-            { true, true, false, true },
-            { false, false, false, false },
-            { false, false, false, false },
-            { false, false, false, false }
+                GoalPattern = new bool[4, 4] {
+                    { true, false, true, false },
+                    { true, true, false, false },
+                    { false, true, true, false },
+                    { false, false, true, true }
                 };
+                LeftPattern[0, 0] = LeftPattern[1, 1] = LeftPattern[2, 2] = true;
+                RightPattern[0, 2] = RightPattern[3, 1] = true;
+                break;
+
             case 7:
-                return new bool[gridSize, gridSize]
-                {
-            { false, true, false, true },
-            { false, false, true, false },
-            { false, false, true, false },
-            { false, true, false, true }
+                GoalPattern = new bool[4, 4] {
+                    { true, true, false, false },
+                    { false, true, true, false },
+                    { false, false, true, true },
+                    { true, false, false, true }
                 };
+                LeftPattern[0, 0] = LeftPattern[1, 1] = LeftPattern[2, 2] = LeftPattern[3, 3] = true;
+                RightPattern[0, 3] = RightPattern[1, 2] = RightPattern[2, 1] = RightPattern[3, 0] = true;
+                break;
+
             case 8:
-                return new bool[gridSize, gridSize]
-                {
-            { false, false, false, false },
-            { true, true, true, true },
-            { false, false, false, false },
-            { true, true, true, true }
+                GoalPattern = new bool[4, 4] {
+                    { true, false, true, false },
+                    { false, true, false, true },
+                    { true, false, true, false },
+                    { false, true, false, true }
                 };
+                LeftPattern[0, 0] = LeftPattern[0, 1] = LeftPattern[1, 0] = LeftPattern[1, 1] = true;
+                RightPattern[2, 2] = RightPattern[2, 3] = RightPattern[3, 2] = RightPattern[3, 3] = true;
+                break;
+
             case 9:
-                return new bool[gridSize, gridSize]
-                {
-            { true, true, false, true },
-            { false, true, true, false },
-            { false, true, true, false },
-            { true, false, true, true }
+                GoalPattern = new bool[4, 4] {
+                    { false, true, true, false },
+                    { true, false, false, true },
+                    { false, true, true, false },
+                    { true, false, false, true }
                 };
+                LeftPattern[0, 0] = LeftPattern[1, 0] = LeftPattern[2, 1] = true;
+                RightPattern[1, 2] = RightPattern[2, 3] = RightPattern[3, 0] = true;
+                break;
+
             case 10:
-                return new bool[gridSize, gridSize]
-                {
-            { false, true, true, false },
-            { true, true, true, true },
-            { true, true, true, true },
-            { false, true, true, false }
+                GoalPattern = new bool[4, 4] {
+                    { true, false, false, true },
+                    { true, true, false, false },
+                    { false, true, true, false },
+                    { false, false, true, true }
                 };
+                LeftPattern[0, 0] = LeftPattern[1, 1] = LeftPattern[2, 2] = true;
+                RightPattern[0, 3] = RightPattern[1, 2] = RightPattern[2, 1] = RightPattern[3, 0] = true;
+                break;
+
+            case 11:
+                GoalPattern = new bool[4, 4] {
+                    { false, true, false, true },
+                    { true, false, true, false },
+                    { false, true, false, true },
+                    { true, false, true, false }
+                };
+                LeftPattern[0, 0] = LeftPattern[1, 1] = LeftPattern[2, 2] = LeftPattern[3, 3] = true;
+                RightPattern[0, 1] = RightPattern[1, 2] = RightPattern[2, 3] = RightPattern[3, 0] = true;
+                break;
+
+            case 12:
+                GoalPattern = new bool[4, 4] {
+                    { true, true, false, false },
+                    { false, true, true, false },
+                    { false, false, true, true },
+                    { true, false, false, true }
+                };
+                LeftPattern[0, 0] = LeftPattern[1, 0] = LeftPattern[2, 1] = LeftPattern[3, 2] = true;
+                RightPattern[0, 3] = RightPattern[1, 2] = RightPattern[2, 1] = RightPattern[3, 0] = true;
+                break;
+
+            case 13:
+                GoalPattern = new bool[4, 4] {
+                    { true, false, true, false },
+                    { false, true, false, true },
+                    { true, false, true, false },
+                    { false, true, false, true }
+                };
+                LeftPattern[0, 0] = LeftPattern[0, 1] = LeftPattern[1, 0] = LeftPattern[1, 1] = true;
+                RightPattern[2, 2] = RightPattern[2, 3] = RightPattern[3, 2] = RightPattern[3, 3] = true;
+                break;
+
+            case 14:
+                GoalPattern = new bool[4, 4] {
+                    { false, true, false, true },
+                    { true, false, true, false },
+                    { false, true, false, true },
+                    { true, false, true, false }
+                };
+                LeftPattern[0, 0] = LeftPattern[1, 1] = LeftPattern[2, 2] = LeftPattern[3, 3] = true;
+                RightPattern[0, 3] = RightPattern[1, 2] = RightPattern[2, 1] = RightPattern[3, 0] = true;
+                break;
+
+            case 15:
+                GoalPattern = new bool[4, 4] {
+                    { true, false, true, false },
+                    { true, true, false, false },
+                    { false, true, true, false },
+                    { false, false, true, true }
+                };
+                LeftPattern[0, 0] = LeftPattern[0, 1] = LeftPattern[1, 0] = LeftPattern[1, 1] = true;
+                RightPattern[2, 2] = RightPattern[2, 3] = RightPattern[3, 2] = RightPattern[3, 3] = true;
+                break;
+
             default:
-                return new bool[gridSize, gridSize];
+                break;
         }
+
+        Debug.Log($"Stage {stage} の初期パターンをロードしました");
     }
 }
