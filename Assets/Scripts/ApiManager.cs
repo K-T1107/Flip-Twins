@@ -22,7 +22,7 @@ public class RankList
 public class RankingManager : MonoBehaviour
 {
     [Header("PHP API URL")]
-    public string url = "http://localhost:8000/ranking.php"; // 自分の環境に合わせて
+    public string url = "http://localhost:8080/ranking.php?stage_id=1"; // 自分の環境に合わせて
 
     [Header("ランキング表示用Text")]
     public Text rankingText; // CanvasのTextをInspectorでアサイン

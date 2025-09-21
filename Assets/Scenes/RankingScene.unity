@@ -152,7 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0904596f475d8cf429867c0fe12bc4f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: http://localhost:8080/ranking.php?stage_id=1
   rankingText: {fileID: 1867041256}
 --- !u!4 &58685822
 Transform:
@@ -823,8 +822,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 200}
-  m_SizeDelta: {x: 400, y: 100}
+  m_AnchoredPosition: {x: 0, y: 50}
+  m_SizeDelta: {x: 400, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1867041256
 MonoBehaviour:

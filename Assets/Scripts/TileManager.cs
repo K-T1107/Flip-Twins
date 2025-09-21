@@ -30,14 +30,16 @@ public class TileManager : MonoBehaviour
 
         switch (stage)
         {
-            case 1: // ‚©‚È‚èŠÈ’P
+            // --- 1`5 ‚Í’´ŠÈ’Pƒ‚[ƒh ---
+            case 1:
                 GoalPattern = new bool[4, 4] {
-                    { false, false, false, false },
-                    { false, true,  false, false },
-                    { false, false, false, false },
-                    { false, false, false, false }
+                    { true, false, false, false },
+                    { true, false, false, false },
+                    { true, false, false, false },
+                    { true, false, false, false }
                 };
-                LeftPattern[0, 0] = true; // ¶1–‡‚¾‚¯— 
+                LeftPattern[0, 0] = true;
+                RightPattern[3, 3] = false;
                 break;
 
             case 2:
@@ -47,8 +49,8 @@ public class TileManager : MonoBehaviour
                     { false, false, false, false },
                     { false, false, false, false }
                 };
-                LeftPattern[0, 0] = true;
-                RightPattern[3, 3] = true;
+                LeftPattern[1, 1] = true;
+                RightPattern[2, 2] = RightPattern[3, 3] = true;
                 break;
 
             case 3:
@@ -59,40 +61,41 @@ public class TileManager : MonoBehaviour
                     { false, false, false, false }
                 };
                 LeftPattern[0, 0] = LeftPattern[1, 1] = true;
-                RightPattern[3, 3] = true;
+                RightPattern[2, 2] = true;
                 break;
 
             case 4:
                 GoalPattern = new bool[4, 4] {
-                    { false, true, false, true },
-                    { true, false, true, false },
-                    { false, true, false, true },
-                    { true, false, true, false }
+                    { false, false, false, false },
+                    { true, true, false, false },
+                    { true, true, false, false },
+                    { false, false, false, false }
                 };
-                LeftPattern[0, 0] = LeftPattern[2, 1] = true;
-                RightPattern[1, 2] = RightPattern[3, 0] = true;
+                LeftPattern[1, 1] = true;
+                RightPattern[0, 2] = RightPattern[2, 1] = true;
                 break;
 
             case 5:
                 GoalPattern = new bool[4, 4] {
-                    { true, false, true, false },
-                    { false, true, false, true },
-                    { true, false, true, false },
-                    { false, true, false, true }
+                    { true, false, false, false },
+                    { true, false, false, false },
+                    { true, false, false, false },
+                    { true, false, false, false }
                 };
-                LeftPattern[0, 0] = LeftPattern[1, 1] = LeftPattern[2, 2] = true;
-                RightPattern[0, 3] = RightPattern[3, 0] = true;
+                LeftPattern[0, 0] = LeftPattern[2, 2] = true;
+                RightPattern[3, 3] = true;
                 break;
 
+            // --- 6`10 ‚Í’†‹‰i3èˆÈ“à‚Å‰ğ‚¯‚éj ---
             case 6:
                 GoalPattern = new bool[4, 4] {
-                    { true, false, true, false },
+                    { true, false, false, false },
                     { true, true, false, false },
                     { false, true, true, false },
-                    { false, false, true, true }
+                    { false, false, false, false }
                 };
-                LeftPattern[0, 0] = LeftPattern[1, 1] = LeftPattern[2, 2] = true;
-                RightPattern[0, 2] = RightPattern[3, 1] = true;
+                LeftPattern[0, 0] = LeftPattern[1, 1] = true;
+                RightPattern[2, 2] = true;
                 break;
 
             case 7:
@@ -100,54 +103,55 @@ public class TileManager : MonoBehaviour
                     { true, true, false, false },
                     { false, true, true, false },
                     { false, false, true, true },
-                    { true, false, false, true }
+                    { false, false, false, false }
                 };
-                LeftPattern[0, 0] = LeftPattern[1, 1] = LeftPattern[2, 2] = LeftPattern[3, 3] = true;
-                RightPattern[0, 3] = RightPattern[1, 2] = RightPattern[2, 1] = RightPattern[3, 0] = true;
+                LeftPattern[0, 0] = LeftPattern[1, 1] = true;
+                RightPattern[2, 2] = RightPattern[3, 3] = true;
                 break;
 
             case 8:
                 GoalPattern = new bool[4, 4] {
                     { true, false, true, false },
-                    { false, true, false, true },
-                    { true, false, true, false },
-                    { false, true, false, true }
+                    { false, true, false, false },
+                    { true, false, false, false },
+                    { false, false, false, false }
                 };
-                LeftPattern[0, 0] = LeftPattern[0, 1] = LeftPattern[1, 0] = LeftPattern[1, 1] = true;
-                RightPattern[2, 2] = RightPattern[2, 3] = RightPattern[3, 2] = RightPattern[3, 3] = true;
+                LeftPattern[0, 0] = LeftPattern[1, 1] = true;
+                RightPattern[2, 0] = true;
                 break;
 
             case 9:
                 GoalPattern = new bool[4, 4] {
-                    { false, true, true, false },
-                    { true, false, false, true },
-                    { false, true, true, false },
-                    { true, false, false, true }
+                    { false, true, false, false },
+                    { true, false, true, false },
+                    { false, true, false, false },
+                    { false, false, false, false }
                 };
-                LeftPattern[0, 0] = LeftPattern[1, 0] = LeftPattern[2, 1] = true;
-                RightPattern[1, 2] = RightPattern[2, 3] = RightPattern[3, 0] = true;
+                LeftPattern[1, 1] = true;
+                RightPattern[2, 2] = true;
                 break;
 
             case 10:
                 GoalPattern = new bool[4, 4] {
                     { true, false, false, true },
-                    { true, true, false, false },
                     { false, true, true, false },
-                    { false, false, true, true }
+                    { false, false, true, false },
+                    { false, false, false, false }
                 };
-                LeftPattern[0, 0] = LeftPattern[1, 1] = LeftPattern[2, 2] = true;
-                RightPattern[0, 3] = RightPattern[1, 2] = RightPattern[2, 1] = RightPattern[3, 0] = true;
+                LeftPattern[0, 0] = LeftPattern[1, 1] = true;
+                RightPattern[3, 0] = true;
                 break;
 
+            // --- 11`13 ‚Í‚¿‚å‚Á‚Æ•¡Gi4è’ö“xj ---
             case 11:
                 GoalPattern = new bool[4, 4] {
-                    { false, true, false, true },
+                    { false, true, false, false },
                     { true, false, true, false },
-                    { false, true, false, true },
-                    { true, false, true, false }
+                    { false, true, false, false },
+                    { false, false, false, false }
                 };
-                LeftPattern[0, 0] = LeftPattern[1, 1] = LeftPattern[2, 2] = LeftPattern[3, 3] = true;
-                RightPattern[0, 1] = RightPattern[1, 2] = RightPattern[2, 3] = RightPattern[3, 0] = true;
+                LeftPattern[0, 1] = LeftPattern[1, 0] = true;
+                RightPattern[2, 1] = RightPattern[3, 2] = true;
                 break;
 
             case 12:
@@ -155,10 +159,10 @@ public class TileManager : MonoBehaviour
                     { true, true, false, false },
                     { false, true, true, false },
                     { false, false, true, true },
-                    { true, false, false, true }
+                    { false, false, false, false }
                 };
-                LeftPattern[0, 0] = LeftPattern[1, 0] = LeftPattern[2, 1] = LeftPattern[3, 2] = true;
-                RightPattern[0, 3] = RightPattern[1, 2] = RightPattern[2, 1] = RightPattern[3, 0] = true;
+                LeftPattern[0, 0] = LeftPattern[1, 1] = true;
+                RightPattern[2, 2] = RightPattern[3, 3] = true;
                 break;
 
             case 13:
@@ -166,32 +170,33 @@ public class TileManager : MonoBehaviour
                     { true, false, true, false },
                     { false, true, false, true },
                     { true, false, true, false },
-                    { false, true, false, true }
+                    { false, false, false, false }
                 };
-                LeftPattern[0, 0] = LeftPattern[0, 1] = LeftPattern[1, 0] = LeftPattern[1, 1] = true;
-                RightPattern[2, 2] = RightPattern[2, 3] = RightPattern[3, 2] = RightPattern[3, 3] = true;
+                LeftPattern[0, 0] = LeftPattern[1, 1] = true;
+                RightPattern[2, 2] = RightPattern[3, 1] = true;
                 break;
 
+            // --- 14,15 ‚Í“ï‚µ‚ß‚¾‚¯‚Ç—•ss‚³‚Í”rœ ---
             case 14:
                 GoalPattern = new bool[4, 4] {
                     { false, true, false, true },
                     { true, false, true, false },
                     { false, true, false, true },
-                    { true, false, true, false }
+                    { false, false, false, false }
                 };
-                LeftPattern[0, 0] = LeftPattern[1, 1] = LeftPattern[2, 2] = LeftPattern[3, 3] = true;
-                RightPattern[0, 3] = RightPattern[1, 2] = RightPattern[2, 1] = RightPattern[3, 0] = true;
+                LeftPattern[0, 1] = LeftPattern[1, 0] = true;
+                RightPattern[2, 1] = RightPattern[3, 2] = true;
                 break;
 
             case 15:
                 GoalPattern = new bool[4, 4] {
                     { true, false, true, false },
-                    { true, true, false, false },
-                    { false, true, true, false },
-                    { false, false, true, true }
+                    { false, true, false, true },
+                    { true, false, true, false },
+                    { false, true, false, true }
                 };
-                LeftPattern[0, 0] = LeftPattern[0, 1] = LeftPattern[1, 0] = LeftPattern[1, 1] = true;
-                RightPattern[2, 2] = RightPattern[2, 3] = RightPattern[3, 2] = RightPattern[3, 3] = true;
+                LeftPattern[0, 0] = LeftPattern[1, 1] = true;
+                RightPattern[2, 2] = RightPattern[3, 3] = true;
                 break;
 
             default:

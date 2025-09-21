@@ -1,61 +1,39 @@
-using UnityEngine;
-using UnityEngine.Networking;
-using UnityEngine.UI;
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
-// 1人分のランキングデータ（クラス名をユニーク化）
 [System.Serializable]
 public class RankingEntry
 {
-    public string playerName;
-    public int gameOverCount;
-}
-
-// ランキングリスト（JSONラップ用、クラス名をユニーク化）
-[System.Serializable]
-public class RankingCollection
-{
-    public List<RankingEntry> ranks;
+    public string name;
+    public int score;
 }
 
 public class RankingDisplayManager : MonoBehaviour
 {
-    [Header("PHP API URL")]
-    public string url = "http://localhost:8080/ranking.php?stage_id=1"; // 必要に応じて変更
-
-    [Header("ランキング表示用Text")]
-    public Text rankingText; // Canvas上のTextをInspectorでアサイン
+    public Text rankingText; // UI TextをInspectorで割り当てる
 
     void Start()
     {
-        StartCoroutine(GetRanking());
+        DisplayDummyRanking();
     }
 
-    IEnumerator GetRanking()
+    void DisplayDummyRanking()
     {
-        UnityWebRequest request = UnityWebRequest.Get(url);
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
+        // 疑似ランキングデータ
+        RankingEntry[] rankings = new RankingEntry[]
         {
-            // JSON配列をラップしてパース
-            string json = "{\"ranks\":" + request.downloadHandler.text + "}";
-            RankingCollection list = JsonUtility.FromJson<RankingCollection>(json);
+            new RankingEntry{ name="Alice", score=1 },
+            new RankingEntry{ name="Bob", score=2 },
+            new RankingEntry{ name="Carol", score=3 },
+            new RankingEntry{ name="Dave", score=4 },
+            new RankingEntry{ name="testuser", score=7 },
+        };
 
-            // Text に表示
-            rankingText.text = "ランキング\n\n";
-            int rank = 1;
-            foreach (var r in list.ranks)
-            {
-                rankingText.text += $"{rank}. {r.playerName} : {r.gameOverCount}\n";
-                rank++;
-            }
-        }
-        else
+        rankingText.text = "";
+        for (int i = 0; i < rankings.Length; i++)
         {
-            rankingText.text = "ランキング取得エラー";
-            Debug.LogError(request.error);
+            rankingText.text += $"{i + 1}. {rankings[i].name} - {rankings[i].score}\n";
         }
     }
 }
